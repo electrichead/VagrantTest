@@ -1,6 +1,8 @@
 
 #!/bin/sh
 
+export DEBIAN_FRONTEND=noninteractive
+
 # update the system
 sudo apt-get update
 sudo apt-get upgrade
@@ -20,6 +22,7 @@ export LANGUAGE='en_US.UTF-8'
 export LANG='en_US.UTF-8'
 export LC_ALL='en_US.UTF-8'
 export ACTIVATOR_VER='1.3.7'
+export CASSANDRA_VER='2.0.17'
 sudo locale-gen en_US.UTF-8
 sudo dpkg-reconfigure locales
 
@@ -68,7 +71,7 @@ sudo apt-get install -y ruby-dev
 #sudo apt-get install -y --force-yes ruby-full
 sudo apt-get update
 sudo gem update --system
-sudo gem install compass
+#sudo gem install compass
 
 # Install necessary tools
 sudo apt-get install -y nano wget dialog net-tools
@@ -99,8 +102,8 @@ sudo ln -s /opt/activator/activator /usr/bin/activator
 sudo echo "deb http://debian.datastax.com/community stable main" | tee -a /etc/apt/sources.list.d/cassandra.sources.list
 sudo curl -L https://debian.datastax.com/debian/repo_key | apt-key add -
 sudo apt-get update
-sudo apt-get install dsc21=2.1.5-1 cassandra=2.1.5
-sudo apt-get install cassandra-tools=2.1.5 ## Optional utilities
+sudo apt-get install -y dsc20 cassandra=${CASSANDRA_VER}
+#sudo apt-get install cassandra-tools=2.1.5 ## Optional utilities
 
 ################################################################################
 # Install the graphical environment
@@ -110,18 +113,14 @@ sudo apt-get install cassandra-tools=2.1.5 ## Optional utilities
 #sudo echo 'allowed_users=anybody' > /etc/X11/Xwrapper.config
 #
 ## install Ubuntu desktop and VirtualBox guest tools
-#sudo apt-get install -y ubuntu-desktop virtualbox-guest-dkms virtualbox-guest-utils virtualbox-guest-x11
+sudo apt-get install -y virtualbox-guest-dkms virtualbox-guest-utils virtualbox-guest-x11
 #sudo apt-get install -y gnome-session-flashback
 
 
 ################################################################################
 # Install the zsh shell
 ################################################################################
-sudo dpkg --configure -a
-sudo apt-get -y install zsh
-sudo chsh -s $(which zsh)
-touch ~/.zshrc
-sudo sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+sudo sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
 #sudo chown -R vagrant:vagrant /home/vagrant
 

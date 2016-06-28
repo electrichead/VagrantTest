@@ -3,10 +3,14 @@
 
 Vagrant.configure("2") do |config|
 
-    config.vm.box = "ubuntu/trusty64"
+    #config.vm.box = "jpease/ubuntu-trusty" # vmware fusion
+    config.vm.box = "ubuntu/trusty64" # virtualBox
+
     config.vm.provision :shell, :path => "scripts/setup.sh"
-    #config.vm.network :forwarded_port, host: 8080, guest: 8080
-    #config.vm.network :forwarded_port, host: 3000, guest: 3000
+
+    config.vm.network :forwarded_port, host: 3188, guest: 8080
+    config.vm.network :forwarded_port, host: 3180, guest: 80
+
     config.ssh.insert_key = true
     # Create a private network, which allows host-only access to the machine
     # using a specific IP.
@@ -15,10 +19,16 @@ Vagrant.configure("2") do |config|
     config.vm.provider :virtualbox do |vb|
         #vb.gui = true
         # Use VBoxManage to customize the VM. For example to change memory:
-        vb.customize ["modifyvm", :id, "--memory", "4096"]
+        vb.customize ["modifyvm", :id, "--memory", "3072"]
         vb.customize ["modifyvm", :id, "--vram", 64]
         #vb.customize ["modifyvm", :id, "--accelerate3d", "on"]
     end
+
+    # Share an additional folder to the guest VM. The first argument is
+    # the path on the host to the actual folder. The second argument is
+    # the path on the guest to mount the folder. And the optional third
+    # argument is a set of non-required options.
+    config.vm.synced_folder "./rogers-server", "/app/totes", create: true
 end
 
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
@@ -53,11 +63,7 @@ end
   # your network.
   # config.vm.network "public_network"
 
-  # Share an additional folder to the guest VM. The first argument is
-  # the path on the host to the actual folder. The second argument is
-  # the path on the guest to mount the folder. And the optional third
-  # argument is a set of non-required options.
-  # config.vm.synced_folder "../data", "/vagrant_data"
+
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
