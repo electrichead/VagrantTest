@@ -4,7 +4,7 @@
 Vagrant.configure("2") do |config|
 
     #config.vm.box = "jpease/ubuntu-trusty" # vmware fusion
-    config.vm.box = "lattice/ubuntu-trusty-64" # virtualBox
+    config.vm.box = "ubuntu/trusty64" # virtualBox
 
     config.vm.provision :shell, :path => "scripts/setup.sh"
 
@@ -19,7 +19,7 @@ Vagrant.configure("2") do |config|
     config.vm.provider :virtualbox do |vb|
         #vb.gui = true
         # Use VBoxManage to customize the VM. For example to change memory:
-        vb.customize ["modifyvm", :id, "--memory", "4096"]
+        vb.customize ["modifyvm", :id, "--memory", "3072"]
         vb.customize ["modifyvm", :id, "--vram", 64]
         #vb.customize ["modifyvm", :id, "--accelerate3d", "on"]
     end
